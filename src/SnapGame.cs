@@ -11,9 +11,13 @@ namespace CardGames
             Bitmap cards;
             cards = SwinGame.LoadBitmapNamed ("Cards", "Cards.png");
             SwinGame.BitmapSetCellDetails (cards, 167, 250, 13, 5, 53);      // set the cells in the bitmap to match the cards
+<<<<<<< HEAD
 			SwinGame.LoadSoundEffectNamed ("StartGame","SwinGameStart.wav");
 			SwinGame.LoadSoundEffectNamed ("Error","error.wav");
 			SwinGame.LoadSoundEffectNamed ("Slap","slap.wav");
+=======
+			SwinGame.LoadFontNamed ("GameFont", "ChunkFive-Regular.otf", 24);
+>>>>>>> 1f1d0074a3136c760c29c4435bc4c1e81cfef6d3
         }
 
 		/// <summary>
@@ -62,7 +66,7 @@ namespace CardGames
 			if (top != null)
 			{
 				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.RoyalBlue, 0, 20);
-				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.RoyalBlue, 0, 30);
+				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.White, "GameFont", 0, 30);
 				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.RoyalBlue, 0, 40);
 				SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), top.CardIndex, 521, 153);
 			}
@@ -87,6 +91,25 @@ namespace CardGames
 			myGame.Update(); // just ask the game to do this...
 		}
 
+		public void Shuffle()
+ 		{
+ 			for(int i = 0; i < 52; i++)
+ 			{
+ 				if(_cards[i].FaceUp) _cards[i].TurnOver();
+ 			}
+ 			Random rnd = new Random();
+ 			// for each card (no need to shuffle last card)
+ 			for(int i = 0; i < 52 - 1; i++)
+ 			{
+ 				// pick a random index
+ 				int rndIdx = rnd.Next(52 - i);
+ 				Card temp = _cards[i];
+ 				_cards[i] = _cards[i + rndIdx];
+				 _cards[i + rndIdx] = temp;
+ 			}
+ 			_topCard = 0;
+ 		}
+
         public static void Main()
         {
             //Open the game window
@@ -104,6 +127,7 @@ namespace CardGames
 				HandleUserInput (myGame);
 				DrawGame (myGame);
 				UpdateGame (myGame);
+				Shuffle();
             }
         }
     }
