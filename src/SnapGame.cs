@@ -66,6 +66,25 @@ namespace CardGames
 			myGame.Update(); // just ask the game to do this...
 		}
 
+		public void Shuffle()
+ 		{
+ 			for(int i = 0; i < 52; i++)
+ 			{
+ 				if(_cards[i].FaceUp) _cards[i].TurnOver();
+ 			}
+ 			Random rnd = new Random();
+ 			// for each card (no need to shuffle last card)
+ 			for(int i = 0; i < 52 - 1; i++)
+ 			{
+ 				// pick a random index
+ 				int rndIdx = rnd.Next(52 - i);
+ 				Card temp = _cards[i];
+ 				_cards[i] = _cards[i + rndIdx];
+				 _cards[i + rndIdx] = temp;
+ 			}
+ 			_topCard = 0;
+ 		}
+
         public static void Main()
         {
             //Open the game window
@@ -83,6 +102,7 @@ namespace CardGames
 				HandleUserInput (myGame);
 				DrawGame (myGame);
 				UpdateGame (myGame);
+				Shuffle();
             }
         }
     }
